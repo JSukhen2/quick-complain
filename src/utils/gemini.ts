@@ -11,8 +11,7 @@ export const generateChatTitle = async (message: string): Promise<string> => {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
-    // 요청하신 gemini-2.0-flash 모델 사용
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-001' });
     
     const prompt = `다음은 사용자가 처음 입력한 민원 내용입니다. 이 내용을 바탕으로 15자 이내의 짧고 간결한 민원 제목을 작성해주세요. 오직 제목만 출력해야 합니다.\n\n내용: ${message}`;
     

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Sidebar } from '../components/Sidebar';
@@ -127,18 +127,55 @@ export const ChatPage: React.FC = () => {
 
     // 첫 번째 사용자 메시지인 경우 제목 생성
     if (messages.length === 1) {
+      const targetSessionId = currentSessionId;
       generateChatTitle(newUserMsg.content).then(newTitle => {
-        setSessions(prev => prev.map(s => 
-          s.id === currentSessionId ? { ...s, title: newTitle } : s
-        ));
+        let currentText = '';
+        let i = 0;
+        
+        // 타이핑 효과 (Typewriter effect)
+        const interval = setInterval(() => {
+          currentText += newTitle[i];
+          setSessions(prev => prev.map(s => 
+            s.id === targetSessionId ? { ...s, title: currentText } : s
+          ));
+          i++;
+          if (i >= newTitle.length) {
+            clearInterval(interval);
+          }
+        }, 50); // 글자당 50ms 딜레이
       });
     }
 
-    // Mock AI Response
+    // Mock AI Response (키워드 기반 라우팅)
     setTimeout(() => {
       let aiResponse: Message;
+      const content = newUserMsg.content;
 
-      if (newUserMsg.content.includes('욕') || newUserMsg.content.includes('신고')) {
+      if (content.includes('고소')) {
+        aiResponse = {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: `고소장 작성을 도와드리겠습니다.\n정확한 사실관계 파악을 위해 아래 양식을 작성해주시면, 이를 바탕으로 법적 효력이 있는 고소장 초안을 작성해 드립니다.`,
+          type: 'lawsuit_form',
+          isFormSubmitted: false,
+        };
+      } else if (content.includes('행정')) {
+        aiResponse = {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: `행정 민원 신청을 도와드리겠습니다.\n원활한 처리를 위해 아래 양식에 민원 내용을 상세히 적어주세요. 담당 부서를 모르셔도 괜찮습니다.`,
+          type: 'admin_form',
+          isFormSubmitted: false,
+        };
+      } else if (content.includes('사업자등록') || content.includes('사업자 등록')) {
+        aiResponse = {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: `사업자 등록 절차를 도와드리겠습니다.\n국세청(홈택스) 제출에 필요한 기본 정보들을 아래 양식에 입력해주세요.`,
+          type: 'business_form',
+          isFormSubmitted: false,
+        };
+      } else if (content.includes('욕') || content.includes('신고')) {
         aiResponse = {
           id: crypto.randomUUID(),
           role: 'assistant',
@@ -158,7 +195,7 @@ export const ChatPage: React.FC = () => {
     }, 1000);
   };
 
-  const handleFormSubmit = (messageId: string, formData: ComplaintFormData) => {
+  const handleFormSubmit = (messageId: string, formData: any) => {
     updateSessionMessages(currentSessionId, (prev) =>
       prev.map((msg) =>
         msg.id === messageId ? { ...msg, isFormSubmitted: true } : msg
@@ -169,7 +206,7 @@ export const ChatPage: React.FC = () => {
       const aiResponse: Message = {
         id: crypto.randomUUID(),
         role: 'assistant',
-        content: `정보가 성공적으로 접수되었습니다. (접수자: ${formData.name})\n담당 부서로 전달되었으며, 추가로 필요한 사항이 있으시면 언제든 말씀해주세요.`,
+        content: `정보가 성공적으로 접수되었습니다. (접수자/신청인: ${formData.name})\n입력해주신 정보를 바탕으로 문서를 생성 중입니다... (LLM 서버 연동 대기)`,
         type: 'text',
       };
       updateSessionMessages(currentSessionId, (prev) => [...prev, aiResponse]);

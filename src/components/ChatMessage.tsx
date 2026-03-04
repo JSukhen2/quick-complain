@@ -1,9 +1,11 @@
-import React from 'react';
 import styled from 'styled-components';
 import PersonIcon from '@mui/icons-material/Person';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import type { Message, ComplaintFormData } from '../types/chat';
 import { ComplaintForm } from './ComplaintForm';
+import { LawsuitForm } from './LawsuitForm';
+import { AdminForm } from './AdminForm';
+import { BusinessForm } from './BusinessForm';
 
 const MessageWrapper = styled.div<{ $role: 'user' | 'assistant' }>`
   padding: 24px 20px;
@@ -56,7 +58,7 @@ const TextContent = styled.div`
 
 interface ChatMessageProps {
   message: Message;
-  onFormSubmit: (id: string, data: ComplaintFormData) => void;
+  onFormSubmit: (id: string, data: any) => void;
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFormSubmit }) => {
@@ -71,6 +73,27 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFormSubmit 
           
           {message.type === 'complaint_form' && (
             <ComplaintForm 
+              messageId={message.id} 
+              isSubmitted={message.isFormSubmitted} 
+              onSubmit={onFormSubmit} 
+            />
+          )}
+          {message.type === 'lawsuit_form' && (
+            <LawsuitForm 
+              messageId={message.id} 
+              isSubmitted={message.isFormSubmitted} 
+              onSubmit={onFormSubmit} 
+            />
+          )}
+          {message.type === 'admin_form' && (
+            <AdminForm 
+              messageId={message.id} 
+              isSubmitted={message.isFormSubmitted} 
+              onSubmit={onFormSubmit} 
+            />
+          )}
+          {message.type === 'business_form' && (
+            <BusinessForm 
               messageId={message.id} 
               isSubmitted={message.isFormSubmitted} 
               onSubmit={onFormSubmit} 
