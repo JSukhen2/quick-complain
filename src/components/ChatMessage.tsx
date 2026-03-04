@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { User, Bot } from 'lucide-react';
+import PersonIcon from '@mui/icons-material/Person';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import type { Message, ComplaintFormData } from '../types/chat';
 import { ComplaintForm } from './ComplaintForm';
 
@@ -63,7 +64,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onFormSubmit 
     <MessageWrapper $role={message.role}>
       <MessageContent>
         <Avatar $role={message.role}>
-          {message.role === 'user' ? <User size={18} /> : <Bot size={18} />}
+          {message.role === 'user' ? <PersonIcon sx={{ fontSize: 18 }} /> : <SmartToyIcon sx={{ fontSize: 18 }} />}
         </Avatar>
         <TextContent>
           {message.content}

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Send } from 'lucide-react';
+import SendIcon from '@mui/icons-material/Send';
 
 const InputAreaContainer = styled.div`
   padding: 20px;
@@ -113,7 +113,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ value, onChange, onSend })
           onClick={handleSendClick}
           disabled={!value.trim()}
         >
-          <Send size={16} />
+          <SendIcon sx={{ fontSize: 16 }} />
         </SendBtn>
       </InputContainer>
     </InputAreaContainer>
