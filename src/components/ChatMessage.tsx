@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PersonIcon from '@mui/icons-material/Person';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
-import type { Message, ComplaintFormData } from '../types/chat';
+import type { Message } from '../types/chat';
 import { ComplaintForm } from './ComplaintForm';
 import { LawsuitForm } from './LawsuitForm';
 import { AdminForm } from './AdminForm';

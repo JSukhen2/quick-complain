@@ -4,7 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Sidebar } from '../components/Sidebar';
 import { ChatMessage } from '../components/ChatMessage';
 import { ChatInput } from '../components/ChatInput';
-import type { Message, ComplaintFormData, ChatSession } from '../types/chat';
+import type { Message, ChatSession } from '../types/chat';
 import { generateChatTitle } from '../utils/gemini';
 
 const PageContainer = styled.div`
